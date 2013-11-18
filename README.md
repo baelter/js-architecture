@@ -1,4 +1,0 @@
-js-architecture
-===============
-
-js-architecture
