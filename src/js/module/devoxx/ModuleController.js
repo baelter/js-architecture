@@ -13,18 +13,23 @@ define(function (require) {
     return function () {
         var model = new SomeModel(),
             sub1ViewController,
-            sub2ViewController;
-
-        // Public events
-        _.extend(this, Backbone.Events);
+            sub2ViewController,
+            eventBroker = _.extend({}, Backbone.Events);
 
         sub1ViewController.on('update', function (args) {
             // This event could be interesting for the app composer
-            this.trigger('update');
+            eventBroker.trigger('update');
 
             // The ModuleController is responsible for wiring Views together
             sub2ViewController.update(args);
         });
+
+        /**
+         * This module has the following events:
+         *
+         * 'update' : Triggered when blabla.
+         */
+        this.on = eventBroker.on;
 
         /**
          * Get a instance of Sub1SomeView

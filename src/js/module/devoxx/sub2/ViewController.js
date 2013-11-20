@@ -1,6 +1,7 @@
 define(function (require) {
     'use strict';
     var _ = require('Underscore'),
+        Backbone = require('Backbone'),
         SomeView = require('./SomeView'),
         OtherView = require('./OtherView'),
         MyModel = require('./MyModel');
@@ -14,8 +15,13 @@ define(function (require) {
         var model = options.model,
             // I handle my own private model
             myModel = new MyModel(),
-            views;
+            views,
+            eventBroker = _.extend({}, Backbone.Events);
 
+        /**
+         * No events
+         */
+        this.on = eventBroker.on;
 
         this.update = function (args) {
             _.each(views, function (view) {

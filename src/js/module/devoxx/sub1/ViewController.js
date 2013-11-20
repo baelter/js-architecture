@@ -1,7 +1,8 @@
 define(function (require) {
     'use strict';
     var Backbone = require('Backbone'),
-        someView = require('./SomeView');
+        someView = require('./SomeView'),
+        eventBroker = _.extend({}, Backbone.Events);
 
     /**
      * Constructor
@@ -12,8 +13,11 @@ define(function (require) {
         var model = options.model,
             someView;
 
-        // Public events
-        _.extend(this, Backbone.Events);
+        /**
+         * The events...
+         * @type {*}
+         */
+        this.on = eventBroker.on;
 
         this.getSomeView = function () {
             someView = someView || new SomeView({
@@ -21,7 +25,7 @@ define(function (require) {
             });
             someView.on('update', function () {
                 // This event could be interesting for other ViewControllers or the ModuleController
-                this.trigger('update');
+                eventBroker.trigger('update');
             });
             return someView;
         };
