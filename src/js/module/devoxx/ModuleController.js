@@ -12,17 +12,18 @@ define(function (require) {
      */
     return function () {
         var model = new SomeModel(),
-            // Module private broker
-            eventBroker = _.extend({}, Backbone.Events),
             sub1ViewController,
             sub2ViewController;
 
         // Public events
         _.extend(this, Backbone.Events);
 
-        eventBroker.on('update', function (args) {
+        sub1ViewController.on('update', function (args) {
             // This event could be interesting for the app composer
             this.trigger('update');
+
+            // The ModuleController is responsible for wiring Views together
+            sub2ViewController.update(args);
         });
 
         /**
@@ -31,8 +32,7 @@ define(function (require) {
          */
         this.getSub1SomeView = function () {
             sub1ViewController = sub1ViewController || new Sub1ViewController({
-                model: model,
-                eventBroker: eventBroker
+                model: model
             });
             return viewAppAPIUtils.reduceAPI(sub1ViewController.getSomeView())
         };
@@ -43,8 +43,7 @@ define(function (require) {
          */
         this.getSub2SomeView = function () {
             sub2ViewController = sub2ViewController || new Sub2ViewController({
-                model: model,
-                eventBroker: eventBroker
+                model: model
             });
             return viewAppAPIUtils.reduceAPI(sub2ViewController.getSomeView())
         };
@@ -55,8 +54,7 @@ define(function (require) {
          */
         this.getSub2OtherView = function () {
             sub2ViewController = sub2ViewController || new Sub2ViewController({
-                model: model,
-                eventBroker: eventBroker
+                model: model
             });
             return viewAppAPIUtils.reduceAPI(sub2ViewController.getOtherView())
         };
